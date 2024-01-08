@@ -1,9 +1,9 @@
 function mainContainer(reactelement, container) {
-  const domElement = document.createElement(reactelement.type);
+  /*  const domElement = document.createElement(reactelement.type);
   domElement.innerHTML = reactelement.children;
   domElement.setAttribute("href", reactelement.props.href);
   domElement.setAttribute("target", reactelement.props.target);
-  container.appendchild(domelement);
+  container.appendchild(domelement); */
 }
 
 const reactelement = {
