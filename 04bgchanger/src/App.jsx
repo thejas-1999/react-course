@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function App() {
-  const [color, setColor] = useState("olive");
+  const [color, setColor] = useState("gray");
 
   return (
     <div
@@ -27,6 +27,12 @@ function App() {
             onClick={() => setColor("blue")}
           >
             Blue
+          </button>
+          <button
+            className="outline-none px-4 py-1 rounded-full text-black shadow-lg bg-yellow-600"
+            onClick={() => setColor("yellow")}
+          >
+            yellow
           </button>
         </div>
       </div>
