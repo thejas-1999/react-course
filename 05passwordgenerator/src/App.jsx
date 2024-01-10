@@ -1,10 +1,35 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function App() {
   const [length, setLength] = useState(8);
   const [numAllowed, setNumAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState("");
+
+  const passref = useRef(null);
+
+  const generatePassword = useCallback(() => {
+    let pass = " ";
+    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    if (numAllowed) str += "0123456789";
+    if (charAllowed) str += "!@#$%^&*()_+";
+
+    for (let i = 0; i < length; i++) {
+      const char = Math.floor(Math.random() * str.length);
+      pass += str.charAt(char);
+    }
+    setPassword(pass);
+  }, [length, numAllowed, charAllowed]);
+
+  const copypass = () => {
+    window.navigator.clipboard.writeText(password.trim());
+    passref.current?.select();
+  };
+
+  useEffect(() => {
+    generatePassword();
+  }, [length, numAllowed, charAllowed]);
 
   return (
     <div
@@ -16,18 +41,19 @@ function App() {
         <input
           type="text"
           value={password}
-          className="outline-none w-full py-1 px-3"
+          className="outline-none w-full py-1 px-3 text-black"
           placeholder="password..."
           readOnly
+          ref={passref}
         />
         <button
           className="outline-none bg-blue-700
          text-white px-3 py-0.5 shrink-0"
+          onClick={copypass}
         >
           Copy
         </button>
       </div>
-
       <div className="flex text-sm gap-x-2">
         <div className="flex items-center gap-x-1">
           <input
@@ -46,10 +72,12 @@ function App() {
         <div className="flex items-center gap-x-1">
           <input
             type="checkbox"
-            defaultChecked={numAllowed}
+            defaultChecked={() => setNumAllowed(!numAllowed)}
             name=""
             id=""
-            onChange={() => setNumAllowed(!numAllowed)}
+            onChange={() => {
+              setNumAllowed((prev) => !prev);
+            }}
           />
           <label htmlFor="number">Numbers</label>
         </div>
